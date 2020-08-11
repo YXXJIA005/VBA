@@ -1,0 +1,122 @@
+Sub step1()
+'
+' insert 0 at end of column, to match up column sizes for later
+'
+
+'
+    ActiveSheet.Cells(ActiveSheet.Rows.Count, 3).End(xlUp).Select
+    ActiveCell.Offset(1, 0).Select
+    ActiveCell.FormulaR1C1 = "0"
+    ActiveSheet.Cells(ActiveSheet.Rows.Count, 4).End(xlUp).Select
+    ActiveCell.Offset(1, 0).Select
+    ActiveCell.FormulaR1C1 = "0"
+
+
+'
+' sort into plus minus
+'
+
+'
+    Range("D4").Select
+    ActiveCell.FormulaR1C1 = "plus"
+    Range("E4").Select
+    ActiveCell.FormulaR1C1 = "minus"
+    Range("F4").Select
+    ActiveCell.FormulaR1C1 = "total"
+    Range("D5").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Cut
+    Range("F5").Select
+    ActiveSheet.Paste
+    Range("D5").Select
+    ActiveCell.FormulaR1C1 = "=IF(RC[-1]>=0,RC[-1],0)"
+    Range("C5").Select
+    Selection.End(xlDown).Select
+    ActiveCell.Offset(0, 1).Select
+    Range(Selection, Selection.End(xlUp)).Select
+    Selection.FillDown
+    Range("E5").Select
+    ActiveCell.FormulaR1C1 = "=IF(RC[-2]<=0,RC[-2],0)"
+    Range("D5").Select
+    Selection.End(xlDown).Select
+    ActiveCell.Offset(0, 1).Select
+    Range(Selection, Selection.End(xlUp)).Select
+    Selection.FillDown
+
+
+'
+' creat table Macro
+'
+
+'
+    Range("H4").Select
+    ActiveCell.FormulaR1C1 = "plus monthly"
+    Range("H5").Select
+    ActiveCell.FormulaR1C1 = "2018"
+    Range("H6").Select
+    ActiveCell.FormulaR1C1 = "2019"
+    Range("H7").Select
+    ActiveCell.FormulaR1C1 = "2020"
+    Range("H8").Select
+    ActiveCell.FormulaR1C1 = "2021"
+    Range("H9").Select
+    ActiveCell.FormulaR1C1 = "2022"
+    Range("H12").Select
+    ActiveCell.FormulaR1C1 = "minus monthly"
+    Range("H13").Select
+    ActiveCell.FormulaR1C1 = "2018"
+    Range("H14").Select
+    ActiveCell.FormulaR1C1 = "2019"
+    Range("H13:H14").Select
+    Selection.AutoFill Destination:=Range("H13:H17"), Type:=xlFillDefault
+    Range("H13:H17").Select
+    Range("I4").Select
+    ActiveCell.FormulaR1C1 = "Jan"
+    Range("J4").Select
+    ActiveCell.FormulaR1C1 = "Feb"
+    Range("K4").Select
+    ActiveCell.FormulaR1C1 = "Mar"
+    Range("I4:K4").Select
+    Selection.AutoFill Destination:=Range("I4:T4"), Type:=xlFillDefault
+    Range("I4:T4").Select
+    ActiveWindow.ScrollColumn = 10
+    ActiveWindow.ScrollColumn = 9
+    ActiveWindow.ScrollColumn = 8
+    ActiveWindow.ScrollColumn = 7
+    ActiveWindow.ScrollColumn = 6
+    ActiveWindow.ScrollColumn = 5
+    Selection.Copy
+    Range("I12").Select
+    ActiveSheet.Paste
+    
+    ' formula for plus and minus monthly
+    Range("I5").Select
+    Application.CutCopyMode = False
+    ActiveCell.Formula2R1C1 = _
+        "=SUMPRODUCT(R5C4:R3571C4,--(TEXT(R5C1:R3571C1,""MMM"")=R4C),--(TEXT(R5C1:R3571C1,""yyyy"")=TEXT(RC8,0)))"
+    Range("I5").Select
+    Selection.AutoFill Destination:=Range("I5:I9"), Type:=xlFillDefault
+    Range("I5:I9").Select
+    Selection.AutoFill Destination:=Range("I5:T9"), Type:=xlFillDefault
+    Range("I5:T9").Select
+    Columns("I:I").EntireColumn.AutoFit
+    Columns("J:J").EntireColumn.AutoFit
+    Columns("K:K").EntireColumn.AutoFit
+    Range("I5").Select
+    Selection.Copy
+    Application.CutCopyMode = False
+    Range("I5").Select
+    Selection.Copy
+    Application.CutCopyMode = False
+    Range("I13").Select
+    Range("I13").Select
+    Application.CutCopyMode = False
+    ActiveCell.Formula2R1C1 = _
+        "=SUMPRODUCT(R5C5:R3571C5,--(TEXT(R5C1:R3571C1,""MMM"")=R4C),--(TEXT(R5C1:R3571C1,""yyyy"")=TEXT(R[-8]C8,0)))"
+    Range("I13").Select
+    Selection.AutoFill Destination:=Range("I13:I17"), Type:=xlFillDefault
+    Range("I13:I17").Select
+    Selection.AutoFill Destination:=Range("I13:T17"), Type:=xlFillDefault
+    Range("I13:T17").Select
+    Range("M22").Select
+End Sub
